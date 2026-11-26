@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meiro Chat Overlay</title>
+<meta name="description" content="A 3D chat overlay for your Twitch stream. No login, nothing to install.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./src/setup/setup.css">
+</head>
+<body>
+<div class="page">
+  <section class="setup">
+    <header>
+      <h1>meiro-chat</h1>
+      <p class="lede">A 3D chat overlay for your Twitch stream. No login, nothing to install.</p>
+    </header>
+
+    <ol class="steps">
+      <li>
+        <label for="channel">Your Twitch channel</label>
+        <input id="channel" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="yourname or twitch.tv/yourname">
+        <p class="note" id="channel-note" aria-live="polite"></p>
+      </li>
+      <li>
+        <fieldset>
+          <legend>Messages disappear after</legend>
+          <div class="segments" role="radiogroup">
+            <label><input type="radio" name="fade" value="15"><span>15s</span></label>
+            <label><input type="radio" name="fade" value="30" checked><span>30s</span></label>
+            <label><input type="radio" name="fade" value="60"><span>60s</span></label>
+            <label><input type="radio" name="fade" value="0"><span>Never</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Screen side</legend>
+          <div class="segments two" role="radiogroup">
+            <label><input type="radio" name="side" value="left" checked><span>Left</span></label>
+            <label><input type="radio" name="side" value="right"><span>Right</span></label>
+          </div>
+        </fieldset>
+        <label for="size" class="size-label">Text size <output id="size-value" for="size">100%</output></label>
+        <input id="size" type="range" min="60" max="160" step="10" value="100">
+      </li>
+      <li>
+        <button id="copy" type="button" disabled>Copy OBS link</button>
+        <p class="note" id="copy-note" aria-live="polite">Enter your channel name first.</p>
+      </li>
+    </ol>
+
+    <footer>
+      Reads your public chat only; nothing leaves your browser.
+    </footer>
+  </section>
+
+  <section class="stage" aria-label="Live preview">
+    <div class="scene">
+      <iframe id="preview" title="Overlay preview" src="./overlay.html?demo=1" width="400" height="600"></iframe>
+    </div>
+    <p class="stage-caption">Live preview, 400 × 600 like in OBS</p>
+  </section>
+</div>
+<script type="module" src="./src/setup/main.ts"></script>
+</body>
+</html>

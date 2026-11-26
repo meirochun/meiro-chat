@@ -1,0 +1,24 @@
+{
+  "name": "meiro-chat",
+  "version": "1.0.0",
+  "description": "",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "test": "vitest run",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "type": "module",
+  "devDependencies": {
+    "jsdom": "^31.0.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.4.0",
+    "vitest": "^5.1.2"
+  },
+  "private": true,
+  "license": "MIT"
+}

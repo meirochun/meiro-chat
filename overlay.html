@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>meiro-chat overlay</title>
+<style>
+  /* Built as an OBS browser source (400 x 600): transparent page, newest message at the bottom,
+     no scrolling or hover states since nobody interacts with it.
+     Sizes are set from the URL in src/overlay/config.ts. */
+  :root {
+    --text: #ffffff;
+    --muted: #d4d4dc;
+    --reply-bg: rgba(0, 0, 0, 0.35);
+    --accent: #bf94ff;
+    --accent-strong: #9147ff;
+    --name-size: 20px;
+    --text-size: 18px;
+    --emote-size: 32px;
+    /* Outline so text stays readable on any background without a card behind it. */
+    --outline: 0 0 2px #000, 0 0 2px #000, 0 1px 3px rgba(0, 0, 0, .9);
+  }
+  * { box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+  body {
+    background: transparent; color: var(--text);
+    font: 600 var(--text-size)/1.4 Inter, "Segoe UI", Roboto, system-ui, sans-serif;
+    text-shadow: var(--outline);
+    /* 3D tilt: perspective on the parent gives depth; pivoting on the left edge keeps it anchored
+       while the right side recedes. Lower perspective = stronger effect. */
+    perspective: 900px;
+  }
+  main {
+    /* Extra right padding keeps the tilted messages inside the frame. */
+    height: 100%; padding: 10px 40px 12px 10px;
+    display: flex; flex-direction: column; justify-content: flex-end; gap: 10px;
+    overflow: hidden;
+    transform-origin: left center;
+    transform: rotateY(20deg);
+  }
+
+  .msg { flex: none; padding: 0 4px 0 18px; overflow-wrap: anywhere; }
+  /* Name and badges sit above the message, pulled a bit to the left of the text. */
+  .head { display: flex; align-items: center; gap: 5px; margin-left: -14px; }
+  .badges { display: inline-flex; gap: 3px; }
+  .badges svg { width: 20px; height: 20px; border-radius: 3px; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,.8)); }
+  .user {
+    font-weight: 800;
+    font-size: var(--name-size);
+    /* Glow around the letters in the user's color (currentColor = the color set in the script),
+       layered over the dark outline so the name stays readable. */
+    text-shadow: 0 0 8px currentColor, 0 0 18px currentColor, var(--outline);
+  }
+  .text { display: block; margin-top: 6px; }
+  .text.action { font-style: italic; }
+  .mention { font-weight: 800; }
+  .emote { height: var(--emote-size); vertical-align: middle; margin: 6px 1px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.6)); }
+
+  /* Entrance: rise from the bottom with a fade and a slight overshoot. */
+  .enter { animation: enter 420ms cubic-bezier(.2, .9, .3, 1.25) both; }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(24px) scale(.96); }
+    to { opacity: 1; transform: none; }
+  }
+  /* Exit after the configured time. */
+  .leave { animation: leave 700ms ease forwards; }
+  @keyframes leave {
+    to { opacity: 0; transform: translateY(-8px); }
+  }
+
+  /* Replies: a thin accent line ties the "Replying to" chip to the message. */
+  .msg.thread { border-left: 3px solid var(--accent-strong); }
+  .reply {
+    display: flex; align-items: center; gap: 6px; margin: 0 0 4px -12px; padding: 2px 8px;
+    background: var(--reply-bg); color: var(--muted); border-radius: 4px; font-size: calc(var(--text-size) * .72); font-weight: 500;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .reply svg { flex: none; }
+  .reply span { overflow: hidden; text-overflow: ellipsis; }
+
+  /* Mirrored (?mirrored=1): for the right side of the screen. Anchored on the right edge and tilted
+     the other way; text is right-aligned, not flipped, so it stays readable. */
+  main.mirrored {
+    padding: 10px 10px 12px 40px;
+    transform-origin: right center;
+    transform: rotateY(-20deg);
+    text-align: right;
+  }
+  .mirrored .msg { padding: 0 18px 0 4px; }
+  .mirrored .head { justify-content: flex-end; margin-left: 0; margin-right: -14px; }
+  .mirrored .msg.thread { border-left: 0; border-right: 3px solid var(--accent-strong); }
+  .mirrored .reply { margin: 0 -12px 4px 0; flex-direction: row-reverse; }
+
+  /* Shown only when the link has no channel. */
+  .hint { margin: auto 0; color: var(--muted); font-size: 16px; }
+</style>
+</head>
+<body>
+<main id="log"></main>
+<script type="module" src="./src/overlay/main.ts"></script>
+</body>
+</html>
