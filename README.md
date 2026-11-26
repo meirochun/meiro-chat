@@ -2,7 +2,7 @@
 
 A 3D chat overlay for your Twitch stream. No login, nothing to install.
 
-![The setup page with a live preview of the chat](docs/images/setup.png)
+![The setup page with a live preview of the chat](public/setup.png)
 
 Messages tilt into the scene, names glow in each chatter's color, and lines rise in and fade out on their own.
 Emotes, replies, mentions, `/me` messages and mod/VIP/sub badges are shown. When a mod deletes a message or times
